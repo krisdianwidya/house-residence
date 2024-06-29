@@ -13,7 +13,7 @@ class HouseController extends Controller
     public function index()
     {
         // get all houses
-        $houses = House::latest()->paginate(5);
+        $houses = House::with(['persons', 'payments'])->latest()->paginate(5);
 
         // return collection of houses
         return new HouseResource(true, 'Houses List', $houses);
@@ -38,5 +38,14 @@ class HouseController extends Controller
 
         //return response
         return new HouseResource(true, 'House added!', $house);
+    }
+
+    public function show($id)
+    {
+        //find house by ID
+        $house = House::with(['persons', 'payments'])->find($id);
+
+        //return single house as a resource
+        return new HouseResource(true, 'House detail', $house);
     }
 }
