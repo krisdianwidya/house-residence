@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('full_name');
             $table->string('id_card_photo')->nullable();
             $table->boolean('is_full')->default(true);
-            $table->string('phone_umber');
+            $table->string('phone_number');
             $table->string('married_status');
             $table->foreignId('house_id')->nullable()->constrained('houses')->onDelete('set null');
             $table->timestamps();
