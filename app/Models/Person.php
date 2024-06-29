@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Person extends Model
 {
@@ -26,5 +27,12 @@ class Person extends Model
     public function payments()
     {
         return $this->hasMany(Payment::class);
+    }
+
+    protected function idCardPhoto(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => url('/storage/posts/' . $value),
+        );
     }
 }
