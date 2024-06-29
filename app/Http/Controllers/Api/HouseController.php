@@ -22,7 +22,37 @@ class HouseController extends Controller
     public function store(Request $request)
     {
 
-        //define validation rules
+        // define validation rules
+        $validator = Validator::make($request->all(), [
+            'house_number' => 'required|string',
+            'is_active' => 'required|boolean',
+        ]);
+
+        // check if validation fails
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        // create house
+        $house = House::create($request->all());
+
+        // return response
+        return new HouseResource(true, 'House added!', $house);
+    }
+
+    public function show($id)
+    {
+        // find house by ID
+        $house = House::with(['persons', 'payments'])->find($id);
+
+        // return single house as a resource
+        return new HouseResource(true, 'House detail', $house);
+    }
+
+    public function update(Request $request, $id)
+    {
+
+        // define validation rules
         $validator = Validator::make($request->all(), [
             'house_number' => 'required|string',
             'is_active' => 'required|boolean',
@@ -33,19 +63,26 @@ class HouseController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
-        //create house
-        $house = House::create($request->all());
+        // find house by id
+        $house = House::find($id);
 
-        //return response
-        return new HouseResource(true, 'House added!', $house);
+        // update house
+        $house->update($request->all());
+
+        // return response
+        return new HouseResource(true, 'House updated!', $house);
     }
 
-    public function show($id)
+    public function destroy($id)
     {
-        //find house by ID
-        $house = House::with(['persons', 'payments'])->find($id);
 
-        //return single house as a resource
-        return new HouseResource(true, 'House detail', $house);
+        // find house by id
+        $house = House::find($id);
+
+        // delete house
+        $house->delete();
+
+        // return response
+        return new HouseResource(true, 'House deleted!', null);
     }
 }
