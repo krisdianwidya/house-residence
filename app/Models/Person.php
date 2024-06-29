@@ -32,7 +32,7 @@ class Person extends Model
     protected function idCardPhoto(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => url('/storage/posts/' . $value),
+            get: fn ($value) => url('/storage/id_cards/' . $value),
         );
     }
 }
