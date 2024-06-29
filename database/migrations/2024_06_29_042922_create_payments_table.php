@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('person_id')->constrained()->onDelete('cascade');
             $table->string('type');
-            $table->string('month', 2);
+            $table->date('bill_for');
             $table->decimal('amount', 10, 2);
             $table->date('paid_at');
             $table->timestamps();
