@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('houses', function (Blueprint $table) {
             $table->id();
-            $table->string('houseNumber');
-            $table->boolean('isActive')->default(true);
+            $table->string('house_number');
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }

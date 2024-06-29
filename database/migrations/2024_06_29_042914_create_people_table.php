@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('people', function (Blueprint $table) {
             $table->id();
-            $table->string('fullName');
-            $table->string('idCardPhoto')->nullable();
-            $table->boolean('isFull')->default(true);
-            $table->string('phoneNumber');
-            $table->string('marriedStatus');
+            $table->string('full_name');
+            $table->string('id_card_photo')->nullable();
+            $table->boolean('is_full')->default(true);
+            $table->string('phone_umber');
+            $table->string('married_status');
             $table->foreignId('house_id')->nullable()->constrained('houses')->onDelete('set null');
             $table->timestamps();
         });
