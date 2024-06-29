@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Models\House;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Resources\HouseResource;
+use App\Http\Resources\GeneralResource;
 use Illuminate\Support\Facades\Validator;
 
 class HouseController extends Controller
@@ -16,7 +16,7 @@ class HouseController extends Controller
         $houses = House::with(['persons', 'payments'])->latest()->paginate(5);
 
         // return collection of houses
-        return new HouseResource(true, 'Houses List', $houses);
+        return new GeneralResource(true, 'Houses List', $houses);
     }
 
     public function store(Request $request)
@@ -37,7 +37,7 @@ class HouseController extends Controller
         $house = House::create($request->all());
 
         // return response
-        return new HouseResource(true, 'House added!', $house);
+        return new GeneralResource(true, 'House added!', $house);
     }
 
     public function show($id)
@@ -46,7 +46,7 @@ class HouseController extends Controller
         $house = House::with(['persons', 'payments'])->find($id);
 
         // return single house as a resource
-        return new HouseResource(true, 'House detail', $house);
+        return new GeneralResource(true, 'House detail', $house);
     }
 
     public function update(Request $request, $id)
@@ -70,7 +70,7 @@ class HouseController extends Controller
         $house->update($request->all());
 
         // return response
-        return new HouseResource(true, 'House updated!', $house);
+        return new GeneralResource(true, 'House updated!', $house);
     }
 
     public function destroy($id)
@@ -83,6 +83,6 @@ class HouseController extends Controller
         $house->delete();
 
         // return response
-        return new HouseResource(true, 'House deleted!', null);
+        return new GeneralResource(true, 'House deleted!', null);
     }
 }
