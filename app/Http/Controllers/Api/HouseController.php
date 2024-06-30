@@ -10,10 +10,19 @@ use Illuminate\Support\Facades\Validator;
 
 class HouseController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        // define query param value
+        $page = $request->input('page', 1);
+        $limit = $request->input('limit', 10);
+        $sort = $request->input('sort', 'house_number');
+        $order = $request->input('order', 'asc');
+
         // get all houses
-        $houses = House::with(['persons', 'payments'])->latest()->paginate(5);
+        $houses = House::with(['persons', 'payments'])
+            ->withCount('persons')
+            ->orderBy($sort, $order)
+            ->paginate($limit, ['*'], 'page', $page);
 
         // return collection of houses
         return new GeneralResource(true, 'Houses List', $houses);
