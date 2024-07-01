@@ -8,13 +8,26 @@ use App\Http\Resources\GeneralResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Database\Eloquent\Builder;
 
 class PersonController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        // define query param value
+        $page = $request->input('page', 1);
+        $limit = $request->input('limit', 10);
+        $sort = $request->input('sort', 'created_at');
+        $order = $request->input('order', 'asc');
+        $houseId = $request->input('house-id');
+
         // get all people
-        $people = Person::with(['house'])->latest()->paginate(5);
+        $people = Person::with(['house'])
+            ->when($houseId, function (Builder $query, $houseId) {
+                $query->where('house_id', '=', $houseId);
+            })
+            ->orderBy($sort, $order)
+            ->paginate($limit, ['*'], 'page', $page);
 
         // return collection of people
         return new GeneralResource(true, 'People List', $people);
@@ -27,7 +40,7 @@ class PersonController extends Controller
         $validator = Validator::make($request->all(), [
             'full_name' => 'required|string',
             'id_card_photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'is_full' => 'required',
+            'is_full' => 'required|boolean',
             'phone_number' => 'required|string',
             'married_status' => 'required|string',
             'house_id' => 'required|exists:houses,id',
