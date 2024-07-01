@@ -10,6 +10,7 @@
           icon="pi pi-plus"
           severity="success"
           class="mr-2"
+          @click="toggleModal(true, 'insertUpdate', null)"
         />
       </template>
     </Toolbar>
@@ -57,12 +58,20 @@
         </template>
       </Column>
     </DataTable>
+    <InsertUpdateHouseModal
+      :showModalProps="showModal"
+      @close="toggleModal"
+      @insertUpdate="fetchAllHouse"
+      :addMode="addMode"
+    />
   </div>
 </template>
 
 <script setup>
 import { ref, reactive, onMounted, watch } from "vue";
 import axios from "axios";
+
+import InsertUpdateHouseModal from "../Components/InsertUpdateHouseModal.vue";
 
 const houses = ref([]);
 const housesCount = ref(0);
@@ -76,6 +85,9 @@ const params = reactive({
 });
 const isError = ref(false);
 const errorMessage = ref("");
+
+const showModal = ref(false);
+const addMode = ref(true);
 
 onMounted(() => {
   fetchAllHouse();
@@ -128,4 +140,18 @@ const onSort = ({ first, rows, sortField, sortOrder }) => {
 watch(params, () => {
   fetchAllHouse();
 });
+
+const toggleModal = (value, type, data) => {
+  if (type === "insertUpdate") {
+    showModal.value = value;
+    if (data) {
+      // employeeData.value = { ...data };
+      addMode.value = false;
+    } else {
+      addMode.value = true;
+    }
+  } else {
+    showModal.value = false;
+  }
+};
 </script>
