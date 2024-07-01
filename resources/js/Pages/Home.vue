@@ -11,7 +11,7 @@
           icon="pi pi-plus"
           severity="success"
           class="mr-2"
-          @click="toggleModal(true, 'insertUpdate', null)"
+          @click="toggleModal(true, 'insert')"
         />
       </template>
     </Toolbar>
@@ -134,15 +134,9 @@ watch(params, () => {
   fetchAllHouse();
 });
 
-const toggleModal = (value, type, data) => {
-  if (type === "insertUpdate") {
+const toggleModal = (value, type) => {
+  if (type === "insert") {
     showModal.value = value;
-    if (data) {
-      // employeeData.value = { ...data };
-      addMode.value = false;
-    } else {
-      addMode.value = true;
-    }
   } else {
     showModal.value = false;
   }
