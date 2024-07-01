@@ -27,6 +27,9 @@ class HouseController extends Controller
             })
             ->withCount('persons')
             ->orderBy($sort, $order)
+            ->when($houseNumber, function (Builder $query) {
+                $query->having('persons_count', '<', 5);
+            })
             ->paginate($limit, ['*'], 'page', $page);
 
         // return collection of houses
