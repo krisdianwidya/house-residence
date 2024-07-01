@@ -1,4 +1,5 @@
 <template>
+  <h1>House Listing</h1>
   <Message v-if="isError" severity="error" :sticky="sticky" :life="4000">{{
     errorMessage
   }}</Message>
@@ -39,7 +40,7 @@
         <template #body="{ data }">
           <Tag
             :value="data.is_active ? 'Terisi' : 'Kosong'"
-            :severity="getSeverity(data.is_active)"
+            :severity="data.is_active ? 'success' : 'warning'"
           />
         </template>
       </Column>
@@ -53,8 +54,10 @@
         headerStyle="width: 5rem; text-align: center"
         bodyStyle="text-align: center; overflow: visible"
       >
-        <template #body>
-          <Button type="button" icon="pi pi-cog" rounded />
+        <template #body="slotProps">
+          <router-link :to="`/house/detail/${slotProps.data.id}`">
+            <Button type="button" icon="pi pi-cog" rounded />
+          </router-link>
         </template>
       </Column>
     </DataTable>
@@ -110,16 +113,6 @@ const fetchAllHouse = async () => {
     errorMessage.value = error.response.data.message;
   }
   isLoading.value = false;
-};
-
-const getSeverity = (status) => {
-  switch (status) {
-    case 0:
-      return "warning";
-
-    case 1:
-      return "success";
-  }
 };
 
 const onPage = ({ first, page, rows, sortField, sortOrder }) => {
