@@ -2,6 +2,8 @@
   <Message v-if="isError" severity="error" :sticky="sticky" :life="4000">{{
     errorMessage
   }}</Message>
+  <Toast />
+  <ConfirmDialog></ConfirmDialog>
   <h1>House Detail</h1>
   <h1 v-if="isLoading">Loading</h1>
   <Card v-else>
@@ -18,6 +20,7 @@
             type="button"
             label="Hapus Data Rumah"
             severity="secondary"
+            @click="deleteHouse()"
           ></Button>
         </div>
       </div>
@@ -70,9 +73,18 @@
 <script setup>
 import axios from "axios";
 import { ref, reactive, onMounted } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
+
+import Toast from "primevue/toast";
+import ConfirmDialog from "primevue/confirmdialog";
+import { useConfirm } from "primevue/useconfirm";
+import { useToast } from "primevue/usetoast";
+
+const confirm = useConfirm();
+const toast = useToast();
 
 const route = useRoute();
+const router = useRouter();
 onMounted(() => {
   fetchDetailHouse();
 });
@@ -115,5 +127,40 @@ const toggleModal = (value, type, data) => {
   } else {
     showModal.value = false;
   }
+};
+
+const processDeleteHouse = async () => {
+  isLoading.value = true;
+  try {
+    await axios.delete(
+      `${import.meta.env.VITE_BASE_URL}api/houses/${route.params.id}`
+    );
+    toast.add({
+      severity: "info",
+      summary: "Confirmed",
+      detail: "Record deleted",
+      life: 3000,
+    });
+    router.push("/");
+  } catch (error) {
+    isError.value = true;
+    errorMessage.value = error.response.data.message;
+  }
+  isLoading.value = false;
+};
+
+const deleteHouse = () => {
+  confirm.require({
+    message: "Apakah yakin untuk menghapus data?",
+    header: "Hati-hati",
+    icon: "pi pi-info-circle",
+    rejectLabel: "Batalkan",
+    acceptLabel: "Lanjut Hapus",
+    rejectClass: "p-button-secondary p-button-outlined",
+    acceptClass: "p-button-danger",
+    accept: () => {
+      processDeleteHouse();
+    },
+  });
 };
 </script>
