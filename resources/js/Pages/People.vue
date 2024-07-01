@@ -51,6 +51,15 @@
           {{ slotProps.data.house.house_number }}
         </template>
       </Column>
+      <Column header="Foto ktp">
+        <template #body="slotProps">
+          <img
+            :src="slotProps.data.id_card_photo"
+            class="border-round"
+            style="width: 70px"
+          />
+        </template>
+      </Column>
       <Column
         header="Action"
         headerStyle="width: 5rem; text-align: center"
