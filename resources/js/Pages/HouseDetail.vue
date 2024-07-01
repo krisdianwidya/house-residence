@@ -14,7 +14,7 @@
           <Button
             type="button"
             label="Ubah data rumah"
-            @click="toggleModal(true, 'insertUpdate', null)"
+            @click="toggleModal(true, 'update')"
           ></Button>
           <Button
             type="button"
@@ -68,6 +68,16 @@
       </DataTable>
     </template>
   </Card>
+  <InsertUpdateHouseModal
+    :showModalProps="showModal"
+    @close="toggleModal"
+    @insertUpdate="fetchDetailHouse"
+    :addMode="false"
+    :houseDetailProps="{
+      houseNumber: houseDetail.house_number,
+      isActive: houseDetail.is_active === 1 ? true : false,
+    }"
+  />
 </template>
 
 <script setup>
@@ -79,6 +89,8 @@ import Toast from "primevue/toast";
 import ConfirmDialog from "primevue/confirmdialog";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
+
+import InsertUpdateHouseModal from "../Components/InsertUpdateHouseModal.vue";
 
 const confirm = useConfirm();
 const toast = useToast();
@@ -102,28 +114,18 @@ const fetchDetailHouse = async () => {
       `${import.meta.env.VITE_BASE_URL}api/houses/${route.params.id}`
     );
     Object.assign(houseDetail, data.data);
-    // houseDetail.se = { ...data.data };
-    // console.log({ ...data.data });
-    console.log(houseDetail);
-    // houses.value = [...data.data.data];
-    // housesCount.value = data.data.total;
   } catch (error) {
-    console.log(error);
-    // isError.value = true;
-    // errorMessage.value = error.response.data.message;
+    isError.value = true;
+    errorMessage.value = error.response.data.message;
   }
   isLoading.value = false;
 };
 
-const toggleModal = (value, type, data) => {
-  if (type === "insertUpdate") {
+const showModal = ref(false);
+
+const toggleModal = (value, type) => {
+  if (type === "update") {
     showModal.value = value;
-    if (data) {
-      // employeeData.value = { ...data };
-      addMode.value = false;
-    } else {
-      addMode.value = true;
-    }
   } else {
     showModal.value = false;
   }

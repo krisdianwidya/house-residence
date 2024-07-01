@@ -60,6 +60,10 @@ import { ref, reactive, defineProps, watch, defineEmits } from "vue";
 import axios from "axios";
 import Toast from "primevue/toast";
 import { useToast } from "primevue/usetoast";
+import { useRoute } from "vue-router";
+
+const route = useRoute();
+
 const toast = useToast();
 
 const showModal = ref(false);
@@ -68,7 +72,7 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-  houseDetail: Object,
+  houseDetailProps: Object,
   addMode: Boolean,
 });
 
@@ -87,9 +91,11 @@ watch(
 );
 
 watch(
-  () => props.houseDetail,
+  () => props.houseDetailProps,
   (newVal) => {
     console.log(newVal);
+    houseDetail.houseNumber = newVal.houseNumber;
+    houseDetail.isActive = newVal.isActive;
   }
 );
 
@@ -115,10 +121,13 @@ const insertHouse = async () => {
           house_number: houseDetail.houseNumber,
           is_active: houseDetail.isActive,
         })
-      : await axios.patch(`${import.meta.env.VITE_BASE_URL}api/houses`, {
-          house_number: houseDetail.houseNumber,
-          is_active: houseDetail.isActive,
-        });
+      : await axios.patch(
+          `${import.meta.env.VITE_BASE_URL}api/houses/${route.params.id}`,
+          {
+            house_number: houseDetail.houseNumber,
+            is_active: houseDetail.isActive,
+          }
+        );
     resetValue();
 
     emit("insertUpdate");
