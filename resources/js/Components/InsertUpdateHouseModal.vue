@@ -93,7 +93,6 @@ watch(
 watch(
   () => props.houseDetailProps,
   (newVal) => {
-    console.log(newVal);
     houseDetail.houseNumber = newVal.houseNumber;
     houseDetail.isActive = newVal.isActive;
   }
