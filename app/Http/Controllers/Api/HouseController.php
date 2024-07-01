@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Resources\GeneralResource;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Database\Eloquent\Builder;
 
 class HouseController extends Controller
 {
@@ -17,9 +18,13 @@ class HouseController extends Controller
         $limit = $request->input('limit', 10);
         $sort = $request->input('sort', 'house_number');
         $order = $request->input('order', 'asc');
+        $houseNumber = $request->input('house-number');
 
         // get all houses
         $houses = House::with(['persons', 'payments'])
+            ->when($houseNumber, function (Builder $query, $houseNumber) {
+                $query->where('house_number', 'like', "%{$houseNumber}%");
+            })
             ->withCount('persons')
             ->orderBy($sort, $order)
             ->paginate($limit, ['*'], 'page', $page);
