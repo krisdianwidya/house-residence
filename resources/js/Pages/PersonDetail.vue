@@ -9,7 +9,7 @@
   <Card v-else>
     <template #title>
       <div class="flex justify-content-between align-content-center">
-        <span> Person Number: {{ personDetail.person_number }} </span>
+        <span> Nama penghuni: {{ personDetail.full_name }} </span>
         <div class="flex gap-2">
           <Button
             type="button"
@@ -52,16 +52,19 @@
       </DataTable>
     </template>
   </Card>
-  <!-- <InsertUpdatePersonModal
+  <InsertUpdatePersonModal
     :showModalProps="showModal"
     @close="toggleModal"
     @insertUpdate="fetchDetailPerson"
     :addMode="false"
     :personDetailProps="{
-      personNumber: personDetail.person_number,
-      isActive: personDetail.is_active === 1 ? true : false,
+      fullName: personDetail.full_name,
+      isFull: personDetail.is_full,
+      phoneNumber: personDetail.phone_number,
+      marriedStatus: personDetail.married_status,
+      selectedHouse: personDetail.house,
     }"
-  /> -->
+  />
 </template>
 
 <script setup>

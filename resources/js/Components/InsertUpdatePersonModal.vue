@@ -135,7 +135,7 @@ const props = defineProps({
 
 const personDetail = reactive({
   fullName: "",
-  isFull: false,
+  isFull: 0,
   phoneNumber: 0,
   marriedStatus: "",
   idCardPhoto: null,
@@ -153,8 +153,11 @@ watch(
 watch(
   () => props.personDetailProps,
   (newVal) => {
-    personDetail.personNumber = newVal.personNumber;
-    personDetail.isActive = newVal.isActive;
+    personDetail.fullName = newVal.fullName;
+    personDetail.isFull = newVal.isFull;
+    personDetail.phoneNumber = newVal.phoneNumber;
+    personDetail.marriedStatus = newVal.marriedStatus;
+    selectedHouse.value = newVal.selectedHouse;
   }
 );
 
@@ -217,10 +220,7 @@ const insertPerson = async () => {
         )
       : await axios.patch(
           `${import.meta.env.VITE_BASE_URL}api/persons/${route.params.id}`,
-          {
-            person_number: personDetail.personNumber,
-            is_active: personDetail.isActive,
-          }
+          formdata
         );
     resetValue();
 
