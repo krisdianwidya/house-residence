@@ -63,12 +63,12 @@
         </template>
       </Column>
     </DataTable>
-    <!-- <InsertUpdateHouseModal
+    <InsertUpdatePersonModal
       :showModalProps="showModal"
       @close="toggleModal"
       @insertUpdate="fetchAllPersons"
       :addMode="addMode"
-    /> -->
+    />
   </div>
 </template>
 
@@ -76,7 +76,7 @@
 import { ref, reactive, onMounted, watch } from "vue";
 import axios from "axios";
 
-// import InsertUpdateHouseModal from "../Components/InsertUpdateHouseModal.vue";
+import InsertUpdatePersonModal from "../Components/InsertUpdatePersonModal.vue";
 
 const persons = ref([]);
 const personsCount = ref(0);
