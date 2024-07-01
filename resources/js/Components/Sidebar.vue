@@ -9,13 +9,13 @@
           to="/"
           class="flex align-items-center cursor-pointer px-6 py-3 text-400 hover:text-100 hover:bg-gray-600 transition-duration-150 transition-colors w-full no-underline"
         >
-          <i class="pi pi-lightbulb mr-2"></i>
+          <i class="pi pi-home mr-2"></i>
           <span class="font-medium">List Rumah</span>
         </router-link>
       </li>
       <li>
         <router-link
-          to="/people"
+          to="/person"
           class="flex align-items-center cursor-pointer px-6 py-3 text-400 hover:text-100 hover:bg-gray-600 transition-duration-150 transition-colors w-full no-underline"
         >
           <i class="pi pi-address-book mr-2"></i>

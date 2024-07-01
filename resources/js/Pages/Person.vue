@@ -1,5 +1,5 @@
 <template>
-  <h1>People Listing</h1>
+  <h1>Person Listing</h1>
   <Message v-if="isError" severity="error" :sticky="sticky" :life="4000">{{
     errorMessage
   }}</Message>
@@ -65,10 +65,10 @@
         headerStyle="width: 5rem; text-align: center"
         bodyStyle="text-align: center; overflow: visible"
       >
-        <template #body>
-          <!-- <router-link :to="`/house/detail/${slotProps.data.id}`"> -->
-          <Button type="button" icon="pi pi-cog" rounded />
-          <!-- </router-link> -->
+        <template #body="slotProps">
+          <router-link :to="`/person/detail/${slotProps.data.id}`">
+            <Button type="button" icon="pi pi-cog" rounded />
+          </router-link>
         </template>
       </Column>
     </DataTable>

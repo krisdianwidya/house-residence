@@ -65,7 +65,7 @@ class PersonController extends Controller
     public function show($id)
     {
         // find person by ID
-        $person = Person::with(['house'])->find($id);
+        $person = Person::with(['house', 'payments'])->find($id);
 
         // return single person as a resource
         return new GeneralResource(true, 'Person detail', $person);

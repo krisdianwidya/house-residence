@@ -1,8 +1,9 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 import Home from "./Pages/Home.vue";
-import People from "./Pages/People.vue";
+import Person from "./Pages/Person.vue";
 import HouseDetail from "./Pages/HouseDetail.vue";
+import PersonDetail from "./Pages/PersonDetail.vue";
 
 const routes = [ {
     path: "/",
@@ -18,8 +19,12 @@ const routes = [ {
     component: HouseDetail,
 },
 {
-    path: "/people",
-    component: People,
+    path: "/person",
+    component: Person,
+},
+{
+    path: '/person/detail/:id',
+    component: PersonDetail,
 },
 ];
 
